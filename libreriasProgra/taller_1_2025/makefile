@@ -36,4 +36,5 @@ clean:
 	rm -f $(OBJS) $(TARGET) 
 
 # Marca 'all' y 'clean' como objetivos "ficticios" (no son archivos reales)
+
 .PHONY: all clean
