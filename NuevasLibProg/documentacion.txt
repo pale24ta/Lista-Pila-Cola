@@ -1,0 +1,93 @@
+
+
+Documentacion de librerias:
+
+Metodos para la clase lista:
+
+public:
+        operador de asignacion = habilitado , asigna una lista a otra " lista1 = lista2" 
+         //metodos clasicos
+        Nodo<T> *getHead(); retorna el head de la lista (nodo)
+        Nodo<T> *getTail(); 
+        int getLongitud() const; 
+        T getElementoHead()const; retorna el elemento del nodo head
+        T getElementoTail() const;
+        void setHead(Nodo<T> *nuevaHead); cambia el valor del nodo al que el head apunta
+        void setTail(Nodo<T> *nuevaTail); 
+        //setLongitud no permitido modifica el tamaño de la lista
+        void insertarEnPosicion(T elemnto, int pos); // para insertar en la ultima posicion hacer lista.getLongitud() + 1
+        void insertarAlFinal(T elemento);
+        void eliminarPorPosicion(int pos);
+        void eliminarAlFinal();
+
+        T consultar(int pos); //con logica para abordar errores , devuelve el valor en dicha posicion 
+        int buscar(T elemento); //devuelve -1 si no esta, devulve la posicion del elemento
+        Lista<T> concatenar(Lista<T> &target); // toma la lista original y la concatena con la lista target y devuelve la lista concatenada
+        bool esVacia() const;
+        void liberarLista(); libera la lista no usado habitualmente
+        void imprimirLista();
+        //funciones adicionales vistas en clases o en parciales
+        void rightShift(int shift);
+        void intercambiar(int pos1, int pos2); //void invertir(); //3 punteros
+        static Lista<T> sortedIntersect(Lista<T> a, Lista<T> b); //funcion estatica usar operadores de ambito 
+        para usar este metodo se hace lo siguiente
+        Lista<int> lista1 = Lista<int>::sortedIntersect(a,b);
+        void invertir() 
+
+metodos para la clase Pila:
+
+public:
+        incluye sobrecarga del operador = , "pilaA = pilaB"
+        void apilar(T elemento);
+        bool desapilar(); //devuelve bool pues puede estar vacia la pila
+        //getters y setters
+        T getElementoTope() const; //retorna el elemento del tope
+        T getElementoFondo() const;//devuelve el elemento del fondo de la pila
+        int getLongitud() const;
+        bool esVacia() const;
+        T consultar(int pos); // con logica de verificacion de errores
+        int existe(T elemento); //verifica si el elemento esta en la pila , devuelve -1 si no
+        void liberarPila();
+        ~Pila();//destructor de pila
+        void imprimirPila();
+
+metodos para la clase Cola:
+
+public:
+        incluye sobrecarga del operador =
+        //destructor
+        ~Cola();
+        //setters y getters
+        void setHead(Nodo<T> *nuevoHead);//establece un nuevo head
+        void setTail(Nodo<T> *nuevoTail); //establece un nuevo tail
+        T getFrente() const; //devulve el elemento en el head
+        T getUltimo() const; ///devuelve el elemento en el tail
+        int getLongitud() const;
+        //estos metodos fueron eliminados por que rompen el encapsulamiento
+        Nodo<T> getHead(); //devuelve puntero a head
+        Nodo<T> getTail(); //devuelve un puntero al tail rompen encapsulamiento
+        
+        //metodos clasicos
+        void encolar(T elemento); 
+        void desencolar(); //booleano , si esta vacia devuelve false
+        //Lista<Cola<T> split(int nPartes); //devuelve una lista de colas separadas en npartes
+        bool esVacia() const; 
+        int existe(T elemento); //verifica si un elemento esta en la cola , -1 sino esta
+        void liberarCola(); // metodo para liberar la lista eliminar nodos
+        void imprimirCola();
+
+NOTA:
+en los metodos como desapilar y desencolar , si las estructuras estan vacias se retorna para evitar algun problema
+en la funciones de consultar en posicion o insertar/ eliminar por posicion la posicion se ajusta para evitar desbordamiento si la
+posicion supera el tamaño de la lista entonces la posicion se establece en la longitud de la lista(insertar al final)
+lo mismo para posiciones < 0 
+
+funcion consultar:
+
+las funciones de consultas trabajan con 1 indexado quiere decir que si se tiene la lista
+<5,2,3> consultar en la posicion lista.getLongitud() devolvera (3), y consultar en la posicion 1 
+devuelve 5 , ya que la posicion 1 es realmente la posicion 0 de la lista , consultar en la posicion 0 , fuera 
+de los limites simplemente devolvera 5 primer elemento (aplica para todos las clases)
+esta funcion devulve un valor por defecto T() , si la lista esta vacia, procurar que no este vacia
+
+todas las clases listas comparten el mismo metodos , excepto sortedIntersect el cual solo lo posee lista (metodo no necesario)
