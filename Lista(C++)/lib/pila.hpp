@@ -25,7 +25,7 @@ class Pila{
         int getLength()const;
         void apilar(Element dato);
         void desapilar();
-        Element& consultarDesapilar();
+        Element consultarDesapilar();
         Element& consultarTope();
         void vaciarPila();
 
@@ -70,5 +70,59 @@ void Pila<Element>::apilar(Element dato)
     length += 1;
 }
 
+template <class Element>
+inline void Pila<Element>::desapilar()
+{
+    if(top != NULL){
+        Nodo<Element> *del;
+
+        del = top;
+        top = top->getNext();
+        delete del;
+
+        length -= 1;
+    }
+}
+
+template <class Element>
+inline Element Pila<Element>::consultarDesapilar()
+{
+    if(top != NULL){
+        Element aux;
+        Nodo<Element> *del;
+        aux = top->getInfo();
+
+        del = top;
+        top = top->getNext();
+        delete del;
+
+        length -= 1;
+
+        return aux;
+    }
+
+    return Element();
+}
+
+template <class Element>
+inline Element &Pila<Element>::consultarTope()
+{
+    return tope->getInfo();
+}
+
+template <class Element>
+inline void Pila<Element>::vaciarPila()
+{
+    Nodo<Element> *p = top;
+    Nodo<Element> *del;
+
+    while(p != NULL){
+        del = p;
+        p = p->getNext();
+        delete p;
+    }
+
+    length = 0;
+}
 
 #endif

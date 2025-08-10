@@ -1,0 +1,33 @@
+[[abigail,blanca,irene,beatriz,angel]
+,[facundo,felipe,leticia,jessica,javier]
+]
+original = [abigail,blanca,irene,beatriz,angel]
+
+se para en el 3
+eliminado =[abigail,blanca,beatriz,angel]
+
+se para en el 1
+eliminado =[blanca,beatriz,angel]
+
+se para en el 2
+eliminado =[blanca,angel]
+
+se para en el 2
+eliminado =[blanca]
+
+blanca
+original = [facundo,felipe,leticia,jessica,javier]
+
+se para en el 4
+eliminado =[facundo,felipe,leticia,javier]
+
+se para en el 1
+eliminado =[felipe,leticia,javier]
+
+se para en el 3
+eliminado =[felipe,leticia]
+
+se para en el 2
+eliminado =[felipe]
+
+felipe

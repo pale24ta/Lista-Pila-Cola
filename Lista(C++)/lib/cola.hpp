@@ -74,6 +74,9 @@ inline void Cola<Element>::desencolar()
 template <class Element>
 inline Element& Cola<Element>::consultarFrente()
 {
-    return front->getInfo();
+    if(front != NULL)
+        return front->getInfo();
+
+    throw std::out_of_range("No hay ningun elemento");
 }
 #endif
