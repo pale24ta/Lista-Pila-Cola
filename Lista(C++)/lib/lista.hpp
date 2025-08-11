@@ -22,7 +22,7 @@ class Lista{
 		Lista(): head(NULL),tail(NULL),len(0) {}
 		Lista(Element *array, int size);
 		Lista(const Lista<Element> &target);
-		~Lista() {}
+		~Lista()
 
 		Nodo<Element>* getHead() {return head;}
 		Nodo<Element>* getTail() {return tail;}
@@ -50,8 +50,8 @@ class Lista{
 		void invertirLista();
 
 };
-
-~Lista(){
+template<class Element>
+Lista<Element>::~Lista(){
 	this->vaciar();
 }
 // Sobrecarga del operador para imprimir >>
