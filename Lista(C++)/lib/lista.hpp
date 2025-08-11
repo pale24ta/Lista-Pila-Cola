@@ -305,6 +305,8 @@ inline void Lista<Element>::vaciar()
 			head = head->getNext();
 			delete del;
 		}
+
+		len = 0;
 	}
 }
 
