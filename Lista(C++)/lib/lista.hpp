@@ -51,6 +51,9 @@ class Lista{
 
 };
 
+~Lista(){
+	this->vaciar();
+}
 // Sobrecarga del operador para imprimir >>
 template<class Element>
 std::ostream &operator<<(std::ostream &os, Lista<Element> list)
@@ -295,8 +298,12 @@ template <class Element>
 inline void Lista<Element>::vaciar()
 {
 	if(head != NULL){
+
+		Nodo<T> del = NULL;
 		while(head != NULL){
-			remover(1);
+			del = head;
+			head = head->getNext();
+			delete del;
 		}
 	}
 }
