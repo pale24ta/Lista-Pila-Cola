@@ -37,7 +37,7 @@ public:
     // Métodos de consulta
     T& consultar(int pos);
     const T& consultar(int pos) const ;
-    int buscar(T elemento);
+    int existe(T elemento);
 
     ListaDoble<T> concatenar(const ListaDoble<T> &target);
     bool esVacia() const;
@@ -229,7 +229,7 @@ const T& ListaDoble<T>::consultar(int pos) const {
     return valorPorDefecto;
 }
 template<typename T>
-int ListaDoble<T>::buscar(T elemento) {
+int ListaDoble<T>::existe(T elemento) {
     if (longitud == 0) return -1;
 
     NodoDoble<T> *actual = head;

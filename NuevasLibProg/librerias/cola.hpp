@@ -32,7 +32,7 @@ class Cola{
         void encolar(T elemento); 
         void desencolar(); //booleano , si esta vacia devuelve false
         bool esVacia() const; 
-        int existe(T elemento); //verifica si un elemento esta en la cola , -1 sino esta
+        int existe(T elemento); //verifica si un elemento esta en la cola , -1 sino esta, //este devuelve la posicion
         void imprimirCola();
         T& consultar(int pos); //con logica para abordar errores
         const T& consultar(int pos) const; 
@@ -138,7 +138,7 @@ int Cola<T>::existe(T elemento){
     int pos=0;
     Nodo<T> *actual=head;
 
-    while (actual->getSiguiente()!=NULL){
+    while (actual!=NULL){
         if(actual->getElemento()==elemento)
             return pos;
         actual=actual->getSiguiente();

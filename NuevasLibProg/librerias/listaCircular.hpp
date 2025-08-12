@@ -37,10 +37,11 @@ public:
     // Métodos de consulta
     T& consultar(int pos); // Con lógica para abordar errores
     const T& consultar(int pos) const; 
-    int buscar(T elemento); // Devuelve -1 si no está, devuelve la posición del elemento
+    int existe(T elemento); // Devuelve -1 si no está, devuelve la posición del elemento
     ListaCircular<T> concatenar(const ListaCircular<T> &target); 
     void imprimirLista();
     void invertir();
+    void rightShift(int shift); //desplazamiento a la derecha
 };
 template<typename T>
 ListaCircular<T>::ListaCircular():head(NULL), tail(NULL), longitud(0){}
@@ -274,7 +275,7 @@ const T& ListaCircular<T>::consultar(int pos) const {
     
 }
 template<typename T>
-int ListaCircular<T>::buscar(T elemento) {
+int ListaCircular<T>::existe(T elemento) {
     if (longitud == 0) 
         return -1; // Lista vacía
     Nodo<T> *actual = head;
@@ -349,5 +350,22 @@ void ListaCircular<T>::invertir(){
     head=anterior;
     tail->setSiguiente(head);
 }
+template<typename T>
+void ListaCircular<T>::rightShift(int shift){
 
+    int realShift, movements, i;
+    Nodo<T> *actual;
+
+    realShift = shift % longitud;
+    movements = longitud - realShift;
+    actual = head;
+    i=0;
+    while (i < movements-1){ //restar uno para ubicarse detras del nodo que sera el nuevo head
+        i++;
+        actual=actual->getSiguiente();
+    }
+    head=actual->getSiguiente();
+    tail=actual;     
+    //aca no es necesario enlazar nodos como head y tail por la circularidad 
+}
 #endif 

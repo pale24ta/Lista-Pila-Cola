@@ -41,7 +41,7 @@ public:
     // Métodos de consulta
     T& consultar(int pos); // Con lógica para abordar errores
     const T& consultar(int pos) const ; // Con lógica para abordar errores
-    int buscar(T elemento); // Devuelve -1 si no está, devuelve la posición del elemento
+    int existe(T elemento); // Devuelve -1 si no está, devuelve la posición del elemento
     ListaCircularDoble<T> concatenar(const ListaCircularDoble<T> &target); 
     bool esVacia() const;
     void imprimirLista();
@@ -302,7 +302,7 @@ const T& ListaCircularDoble<T>::consultar(int pos) const {
     
 }
 template<typename T>
-int ListaCircularDoble<T>::buscar(T elemento) {
+int ListaCircularDoble<T>::existe(T elemento) {
     if (longitud == 0)
         return -1; // Lista vacía
 

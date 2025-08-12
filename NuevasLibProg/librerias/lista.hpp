@@ -36,7 +36,7 @@ class Lista{
         int buscar(T elemento); //devuelve -1 si no esta, devulve la posicion del elemento
         Lista<T> concatenar(Lista<T> &target); // toma la lista original y la concatena con la lista target y devuelve la lista concatenada
         bool esVacia() const;
-        
+        int existe(T elemento); //verifica si el elemento existe y devuelve su posicion , -1 si no existe
         void imprimirLista();
         void invertir(); 
         //funciones adicionales vistas en clases o en parciales
@@ -213,6 +213,20 @@ const T& Lista<T>::consultar(int pos) const {
 
         return actual->getElemento();
 }
+template<typename T> 
+int Lista<T>::existe(T elemento) {
+    if(head == NULL)
+        return -1;
+    int pos=0;
+    Nodo<T> *actual=head;
+    while (actual != NULL){
+        if(actual->getElemento()==elemento)
+            return pos;
+        actual = actual->getSiguiente();
+        pos++;
+    }
+    return -1;
+}
 template<typename T>
 int Lista<T>::buscar(T elemento){
     if(head==NULL)
@@ -297,23 +311,23 @@ void Lista<T>::invertir(){
 //funciones echas en clase
 template<typename T>
 void Lista<T>::rightShift(int shift){
-    Nodo<T> *actual=NULL , *nuevoHead=NULL;
-    int i;
 
-    if(head==NULL || head->getSiguiente()==NULL || shift==0)
-        return; //lista vacia o shift 0
-    actual=head;
-    //hacer la lista circular temporalment
-    tail->getSiguiente()=head;
-    shift = shift % longitud;
+    int realShift, movements, i;
+    Nodo<T> *first, *actual;
 
-    for (i= 0; i < longitud - shift; i++)
+    realShift = shift % longitud;
+    movements = longitud - realShift;
+    first = head;
+    actual = head;
+    i=0;
+    while (i < movements-1){ //restar uno para ubicarse detras del nodo que sera el nuevo head
+        i++;
         actual=actual->getSiguiente();
-    nuevoHead=actual->getSiguiente();
-    head=nuevoHead;
-    tail=actual;
-    tail->setSiguiente(NULL);
-        
+    }
+    head=actual->getSiguiente();
+    actual->setSiguiente(NULL); 
+    tail->setSiguiente(first);
+    tail=actual;     
 }
 template<typename T>
 void Lista<T>::intercambiar(int pos1, int pos2){
