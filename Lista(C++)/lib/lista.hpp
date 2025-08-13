@@ -23,6 +23,7 @@ class Lista{
 		Lista(Element *array, int size);
 		Lista(const Lista<Element> &target);
 		~Lista();
+		void copiar(const Lista<Element> &target);
 
 		Nodo<Element>* getHead() {return head;}
 		Nodo<Element>* getTail() {return tail;}
@@ -46,6 +47,8 @@ class Lista{
 		Element& operator[](int index);
 		void intercambiar(int pos1, int pos2);
 		bool operator==(const Lista<Element> &target);
+		Lista<Element> operator+(Lista<Element> &target);
+		Lista<Element>& operator=(Lista<Element> &target);
 		void leftShift(int shift);
 		void invertirLista();
 
@@ -53,6 +56,29 @@ class Lista{
 template<class Element>
 Lista<Element>::~Lista(){
 	this->vaciar();
+}
+template <class Element>
+inline void Lista<Element>::copiar(const Lista<Element> &target)
+{
+	if(len != 0){
+		vaciar();
+	}
+	if(target.len != 0){
+
+		Nodo<Element> *ptr = target.head;
+		Nodo<Element> *nuevo = new Nodo<Element>(ptr->getInfo());
+		
+		head = tail = nuevo;
+
+		for(ptr = ptr->getNext(); ptr != NULL; ptr = ptr->getNext()){
+			nuevo->setNext(new Nodo<Element>(ptr->getInfo()));
+			tail = nuevo = nuevo->getNext();
+		}
+
+		len = target.len;
+	}
+	
+
 }
 // Sobrecarga del operador para imprimir >>
 template<class Element>
@@ -144,7 +170,32 @@ void Lista<Element>::intercambiar(int pos1, int pos2){
 template <class Element>
 inline bool Lista<Element>::operator==(const Lista<Element> &target)
 {
-    return false;
+    if(len == len.target){
+		Nodo<Element> *p = head, *q = target.head;
+
+		while(p != NULL && q != NULL){
+			if(p->getInfo() != q->getInfo())
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+template <class Element>
+inline Lista<Element> Lista<Element>::operator+(Lista<Element> &target)
+{
+    Lista<Element> nueva(*this);
+	Nodo<Element> *q = target.head;
+
+	while(q != NULL){
+		nueva.tail->setNext(new Nodo<Element>(q->getInfo()));
+		nueva.tail = nueva.tail->getNext();
+		q = q->getNext();
+	}
+
+	return nueva;
+	
 }
 
 template <class Element>
