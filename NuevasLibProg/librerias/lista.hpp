@@ -1,8 +1,6 @@
 #ifndef LISTAHPP
 #define LISTAHPP
 #include<iostream>
-#include<algorithm> //para swap en c++ 98
-#include<utility> // para swap c++ 11
 #include "nodo.hpp" 
 
 using namespace std;
@@ -14,13 +12,15 @@ class Lista{
         int longitud;
 
         void liberarLista();
+        void swap(Nodo<T>*& a, Nodo<T>*& b);
+        void swapT(int& a, int& b); //para operador de asignacion
     public:
         //constructor polimorfico
         Lista();
         ///constructor copia
         Lista(const Lista<T>  &target);
         //operador de asinacion
-        Lista<T>& operator=(const Lista<T>& target);
+        Lista<T>& operator=( Lista<T>& target);
         //destructor de lista 
          ~Lista();
          //metodos clasicos
@@ -43,6 +43,7 @@ class Lista{
         void rightShift(int shift);
         void intercambiar(int pos1, int pos2); 
         static Lista<T> sortedIntersect(Lista<T> a, Lista<T> b); //funcion estatica usar operadores de ambito
+        bool operator==(const Lista<T> &target) const;
 
 };
 //declaraciones de la clase lista 
@@ -69,14 +70,14 @@ Lista<T>::Lista(const Lista<T> &target) : head(NULL), tail(NULL), longitud(0) {
 }
 //operador de asignacion
 template<typename T>
-Lista<T>& Lista<T>::operator=(const Lista<T>& target){
+Lista<T>& Lista<T>::operator=(Lista<T>& target){
     
     if(this != &target){
         Lista<T> aux(target); 
     
         swap(aux.head, head);
         swap(aux.tail, tail);
-        swap(aux.longitud, longitud);
+        swapT(aux.longitud,longitud);
     }
     return *this;
 }
@@ -382,5 +383,33 @@ Lista<T> Lista<T>::sortedIntersect(Lista<T> a, Lista<T> b){
     }
     return resultado;
 }
-
+template<typename T>
+void Lista<T>::swap(Nodo<T>*& a, Nodo<T>*& b){
+    Nodo<T>* aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T> 
+void Lista<T>::swapT(int &a, int &b){
+    int aux=a;
+    a=b;
+    b=aux;
+}
+template<typename T>  
+bool Lista<T>::operator==(const Lista<T> &target) const{
+    if(longitud == target.longitud ){
+        Nodo<T> *thisActual, *targetActual;
+        thisActual = head;
+        targetActual = target.head;
+        while (targetActual!=NULL && thisActual!=NULL){//la segunda comprobacion es opcional.. por seguridad la coloque
+            if(targetActual->getElemento() != thisActual->getElemento())
+                return false;
+            targetActual=targetActual->getSiguiente();
+            thisActual=thisActual->getSiguiente();
+        }
+    }else{
+        return false;
+    }
+    return true;
+}
 #endif

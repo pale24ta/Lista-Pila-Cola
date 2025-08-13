@@ -3,8 +3,7 @@
 
 #include "nodo.hpp" 
 #include <iostream>  
-#include <utility>   // para swap c++ 11
-#include <algorithm> //para swap c++ 98
+
 
 using namespace std; 
 
@@ -15,6 +14,8 @@ private:
     int longitud;
 
     void liberarLista(); 
+    void swap(Nodo<T>*& a, Nodo<T>*& b);
+    void swapT(int & a, int& b);
 
 public:
     ListaCircular();
@@ -42,6 +43,8 @@ public:
     void imprimirLista();
     void invertir();
     void rightShift(int shift); //desplazamiento a la derecha
+    bool operator==(const ListaCircular<T> &target) const;
+    
 };
 template<typename T>
 ListaCircular<T>::ListaCircular():head(NULL), tail(NULL), longitud(0){}
@@ -59,11 +62,11 @@ ListaCircular<T>::ListaCircular(const ListaCircular<T> &target) : head(NULL), ta
 }
 template<typename T>
 ListaCircular<T>& ListaCircular<T>::operator=(const ListaCircular<T>& target){
-    if(this != target){
+    if(this != &target){
         ListaCircular<T> aux(target); // Usa el constructor de copia
         swap(aux.head, head);
         swap(aux.tail, tail);
-        swap(aux.longitud, longitud);
+        swapT(aux.longitud, longitud);
     
     }
     return *this;
@@ -368,4 +371,34 @@ void ListaCircular<T>::rightShift(int shift){
     tail=actual;     
     //aca no es necesario enlazar nodos como head y tail por la circularidad 
 }
+template<typename T>
+void ListaCircular<T>::swap(Nodo<T>*& a, Nodo<T>*& b){
+    Nodo<T>* aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T>
+void ListaCircular<T>::swapT(int & a, int& b){
+    int aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T>  
+bool ListaCircular<T>::operator==(const ListaCircular<T> &target) const{
+    if(longitud == target.longitud ){
+        Nodo<T> *thisActual, *targetActual;
+        thisActual = head;
+        targetActual = target.head;
+        while (targetActual!=target.head && thisActual!=head){//la segunda comprobacion es opcional.. por seguridad la coloque
+            if(targetActual->getElemento() != thisActual->getElemento())
+                return false;
+            targetActual=targetActual->getSiguiente();
+            thisActual=thisActual->getSiguiente();
+        }
+    }else{
+        return false;
+    }
+    return true;
+}
+
 #endif 

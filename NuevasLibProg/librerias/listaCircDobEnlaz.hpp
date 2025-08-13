@@ -3,8 +3,6 @@
 
 #include "nodoDoble.hpp" 
 #include <iostream>
-#include <utility> // Para swap en c++ 11
-#include <algorithm> //para swap en c++ 98
 
 using namespace std; 
 
@@ -16,6 +14,8 @@ private:
     int longitud;
 
     void liberarLista();
+    void swap(NodoDoble<T>*& a, NodoDoble<T>*& b);
+    void swapT(int &a, int &b);
 
 public:
     // Constructor por defecto
@@ -48,6 +48,7 @@ public:
     // Nuevo método para imprimir en sentido inverso 
     void imprimirListaInversa();
     void invertir();
+    bool operator==(const ListaCircularDoble<T> &target) const;
 };
 // Constructor por defecto
 template<typename T>
@@ -73,7 +74,7 @@ ListaCircularDoble<T>& ListaCircularDoble<T>::operator=(const ListaCircularDoble
         ListaCircularDoble<T> aux(target); // Usa el constructor de copia
         swap(aux.head, head);
         swap(aux.tail, tail);
-        swap(aux.longitud, longitud);
+        swapT(aux.longitud, longitud);
     }
     return *this;
 }
@@ -395,5 +396,34 @@ void ListaCircularDoble<T>::invertir(){
     head->setAnterior(tail);
     tail->setSiguiente(head);
 
+}
+template<typename T>
+void ListaCircularDoble<T>::swap(NodoDoble<T>*& a, NodoDoble<T>*& b){
+    NodoDoble<T>* aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T>
+void ListaCircularDoble<T>::swapT(int & a, int& b){
+    int aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T>  
+bool ListaCircularDoble<T>::operator==(const ListaCircularDoble<T> &target) const{
+    if(longitud == target.longitud ){
+        NodoDoble<T> *thisActual, *targetActual;
+        thisActual = head;
+        targetActual = target.head;
+        while (targetActual!=target.head && thisActual!=head){//la segunda comprobacion es opcional.. por seguridad la coloque
+            if(targetActual->getElemento() != thisActual->getElemento())
+                return false;
+            targetActual=targetActual->getSiguiente();
+            thisActual=thisActual->getSiguiente();
+        }
+    }else{
+        return false;
+    }
+    return true;
 }
 #endif

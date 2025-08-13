@@ -3,8 +3,6 @@
 
 #include "nodo.hpp"
 #include<iostream>
-#include <algorithm> //para swap en c++ 98
-#include<utility> //para swap en c++ 11
 using namespace std;
 
 template<typename T>
@@ -15,22 +13,23 @@ class Pila{
         int longitud;
 
         void liberarPila();
+        void swap(Nodo<T>*& a, Nodo<T>*& b);
+        void swapT(int &a, int &b);
     public:
         Pila();//constructor 
-        Pila(Pila<T> &target);//constructor copia
+        Pila(const Pila<T> &target);//constructor copia
         Pila<T>& operator=(const Pila<T>& target);
         void apilar(T elemento);
         void desapilar(); //si la pila esta vacia no hace nada
         //getters y setters
-        const T& getElementoTope() const; //retorna el elemento del tope
-        const T& getElementoFondo() const;//devuelve el elemento del fondo de la pila
+        T& getElementoTope() const; //retorna el elemento del tope
+        T& getElementoFondo() const;//devuelve el elemento del fondo de la pila
         int getLongitud() const;
         bool esVacia() const;
-        T& consultar(int pos); 
-        const T& consultar(int pos) const;// con logica de verificacion de errores
         int existe(T elemento); //verifica si el elemento esta en la pila , devuelve -1 si no
         ~Pila();//destructor de pila
         void imprimirPila();
+        bool operator==(const Pila<T> &target) const;
 
 
 };
@@ -39,7 +38,7 @@ template<typename T>
 Pila<T>::Pila(): tope(NULL), fondo(NULL),longitud(0){}
 //constructor copia
 template<typename T>
-Pila<T>::Pila(Pila<T> &target): tope(NULL), fondo(NULL), longitud(0){
+Pila<T>::Pila(const Pila<T> &target): tope(NULL), fondo(NULL), longitud(0){
     //si la pila original esta vacia, no hay nada que copiar
     if(target.tope == NULL) return;
     Nodo<T> *actualTarget= target.tope;
@@ -60,20 +59,24 @@ template<typename T>
 Pila<T>& Pila<T>::operator=(const Pila<T>& target) { 
     if (this != &target) {
         Pila<T> copia(target); // Usa el constructor de copia
-        swap(tope, copia.tope);
-        swap(longitud, copia.longitud);
+        swap(copia.tope, tope);
+        swap(copia.fondo, fondo);
+        swapT(copia.longitud, longitud);
     }
     return *this; 
 }
 template<typename T>
-const T& Pila<T>::getElementoTope() const{
-    static const T valorPorDefecto = T();
+T& Pila<T>::getElementoTope() const{
+    static T valorPorDefecto = T();
     if(tope == NULL)
         return valorPorDefecto;
     return tope->getElemento();
 }
 template<typename T>
-const T& Pila<T>::getElementoFondo() const{
+T& Pila<T>::getElementoFondo() const{
+    static T valorPorDefecto = T();
+    if(fondo == NULL)
+        return valorPorDefecto;
     return fondo->getElemento(); 
 }
 template<typename T>
@@ -107,54 +110,6 @@ void Pila<T>::desapilar(){
 template<typename T>
 bool Pila<T>::esVacia() const {
     return tope==NULL;
-}
-
-template<typename T>
-T& Pila<T>::consultar(int pos) {
-    static T valorPorDefecto = T();  // Variable estática para retorno seguro
-    
-    if (esVacia()) 
-        return valorPorDefecto;  
-    
-    // Ajustar posición si es inválida
-    if (pos <= 0) 
-        return tope->getElemento();  // Retorna referencia al tope
-    
-    if (pos >= longitud) 
-        pos = longitud - 1;  // Ajusta al último elemento
-    
-    Nodo<T>* actual = tope;
-    for (int i = 0; i < pos && actual != NULL; ++i) 
-        actual = actual->getSiguiente();
-
-    if (actual != NULL) 
-        return actual->getElemento();  
-    
-    return valorPorDefecto;  
-}
-template<typename T>
-const T& Pila<T>::consultar(int pos) const {
-    // Variable estática para retornar en caso de error
-    static const T valorPorDefecto = T();
-    
-    if (esVacia()) {
-        return valorPorDefecto;
-    }
-
-    // Ajustar posición si es inválida
-    if (pos <= 0) {
-        return tope->getElemento(); 
-    }
-    if (pos >= longitud) {
-        pos = longitud - 1; 
-    }
-
-    Nodo<T>* actual = tope;
-    for (int i = 0; i < pos; ++i) 
-        actual = actual->getSiguiente();
-
-    return actual->getElemento();
-    
 }
 template<typename T>
 int Pila<T>::existe(T elemento){
@@ -204,4 +159,34 @@ void Pila<T>::imprimirPila(){
         actual=actual->getSiguiente();
     }
 }
+template<typename T>
+void Pila<T>::swap(Nodo<T>*& a, Nodo<T>*& b){
+    Nodo<T>* aux = a;
+    a = b;
+    b = aux;
+}
+template<typename T> 
+void Pila<T>::swapT(int &a, int &b){
+    int aux=a;
+    a=b;
+    b=aux;
+}
+template<typename T>  
+bool Pila<T>::operator==(const Pila<T> &target) const{
+    if(longitud == target.longitud ){
+        Nodo<T> *thisActual, *targetActual;
+        thisActual = tope;
+        targetActual = target.tope;
+        while (targetActual!=NULL && thisActual!=NULL){//la segunda comprobacion es opcional.. por seguridad la coloque
+            if(targetActual->getElemento() != thisActual->getElemento())
+                return false;
+            targetActual=targetActual->getSiguiente();
+            thisActual=thisActual->getSiguiente();
+        }
+    }else{
+        return false;
+    }
+    return true;
+}
+
 #endif

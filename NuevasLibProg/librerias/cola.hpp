@@ -1,8 +1,6 @@
 #ifndef COLAHPP
 #define COLAHPP
 #include "nodo.hpp"
-#include<utility> //para swap
-#include<algorithm> //para swap en c++ 98
 #include<iostream>
 
 using namespace std;
@@ -15,6 +13,8 @@ class Cola{
         int longitud;
 
         void liberarCola(); 
+        void swap(Nodo<T>*& a, Nodo<T>*& b);
+        void swapT(int &a, int &b);
     public:
         //constructor por defecto
         Cola();
@@ -25,8 +25,8 @@ class Cola{
         //destructor
         ~Cola();
         //setters y getters
-        const T& getFrente() const; 
-        const T& getUltimo() const; 
+        T& getFrente() const; 
+        T& getUltimo() const; 
         int getLongitud() const;
         //metodos clasicos
         void encolar(T elemento); 
@@ -34,8 +34,7 @@ class Cola{
         bool esVacia() const; 
         int existe(T elemento); //verifica si un elemento esta en la cola , -1 sino esta, //este devuelve la posicion
         void imprimirCola();
-        T& consultar(int pos); //con logica para abordar errores
-        const T& consultar(int pos) const; 
+        bool operator==(const Cola<T> &target) const;
 };
 //constructor polimorfico
 template<typename T>
@@ -49,6 +48,7 @@ Cola<T>::Cola( const Cola<T> &target): head(NULL), tail(NULL), longitud(0) {
         Nodo<T> *original = target.head;
         head = new Nodo<T>(original->getElemento());
         tail=head;
+        longitud++;
         //avanzar al siguiente nodo en la lista original
         original= original->getSiguiente();
         while(original!= NULL){
@@ -56,6 +56,7 @@ Cola<T>::Cola( const Cola<T> &target): head(NULL), tail(NULL), longitud(0) {
             tail->setSiguiente(nuevoNodo);
             tail= nuevoNodo;
             original = original->getSiguiente();
+            longitud++;
         }
     }
 }
@@ -66,8 +67,10 @@ Cola<T>& Cola<T>::operator=(const Cola<T> &target){
     if(this != &target){
         Cola<T> aux(target); // y aqui creo una copia temporal
         // intercambiar contenidos
-        swap(head, aux.head);
-        swap(tail, aux.tail);
+        swap(aux.head, head);
+        swap(aux.tail, tail);
+        swapT(aux.longitud, longitud);
+        
         // aux se destrue automaticamente, liberando la memoria vieja
         // esto pasa por que se llama al destructor de la clasw
     }
@@ -83,15 +86,15 @@ int Cola<T> :: getLongitud() const{
     return longitud;
 }
 template<typename T>
-const T& Cola<T> :: getFrente() const{
-    static const T valorPorDefecto = T();
+T& Cola<T> :: getFrente() const{
+    static  T valorPorDefecto = T();
     if (head == NULL)
         return valorPorDefecto; 
     return head->getElemento(); 
 }
 template<typename T>
-const T& Cola<T>::getUltimo() const{
-    static const T valorPorDefecto = T();
+T& Cola<T>::getUltimo() const{
+    static T valorPorDefecto = T();
     if(tail==NULL)
         return valorPorDefecto;
     return tail->getElemento();
@@ -174,47 +177,33 @@ void Cola<T>::imprimirCola(){
         actual=actual->getSiguiente();
     }
 }
-template<typename T>
-T& Cola<T>::consultar(int pos) {
-  
-    static T valorPorDefecto = T();
-    
-    if (esVacia()) 
-        return valorPorDefecto;
-    
-    if (pos <= 0) 
-        return head->getElemento();
-    if (pos >= longitud) 
-        return tail->getElemento();
-
-    Nodo<T>* actual = head;
-    
-    for (int i = 0; i < pos; ++i) 
-        actual = actual->getSiguiente();
-     
-    return actual->getElemento();
-    
+template<typename T>  
+bool Cola<T>::operator==(const Cola<T> &target) const{
+    if(longitud == target.longitud ){
+        Nodo<T> *thisActual, *targetActual;
+        thisActual = head;
+        targetActual = target.head;
+        while (targetActual!=NULL && thisActual!=NULL){//la segunda comprobacion es opcional.. por seguridad la coloque
+            if(targetActual->getElemento() != thisActual->getElemento())
+                return false;
+            targetActual=targetActual->getSiguiente();
+            thisActual=thisActual->getSiguiente();
+        }
+    }else{
+        return false;
+    }
+    return true;
+}
+template<typename T> 
+void Cola<T>::swapT(int &a, int &b){
+    int aux=a;
+    a=b;
+    b=aux;
 }
 template<typename T>
-const T& Cola<T>::consultar(int pos) const {
-  
-    static const T valorPorDefecto = T();
-    
-    if (esVacia()) 
-        return valorPorDefecto;
-
-    if (pos <= 0) 
-        return head->getElemento();
-    if (pos >= longitud) 
-        return tail->getElemento();
-
-    Nodo<T>* actual = head;
-    
-    for (int i = 0; i < pos; ++i) 
-        actual = actual->getSiguiente();
-
-    
-    return actual->getElemento();
-    
+void Cola<T>::swap(Nodo<T>*& a, Nodo<T>*& b){
+    Nodo<T>* aux = a;
+    a = b;
+    b = aux;
 }
 #endif

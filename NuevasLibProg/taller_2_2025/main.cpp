@@ -18,6 +18,20 @@ using namespace std;
 
 int main(){
 
+    ListaCircularDoble<int> lista, otra;
+    for (int i = 0; i < 5; i++)
+    {
+        lista.insertarEnPosicion(i,i);
+    }
+    
+    otra = lista;
+    cout<<endl<<otra.getLongitud()<<" "<<lista.getLongitud()<<endl;
+
+    if(otra==lista)
+        cout<<"\nlistas iguales\n";
+    else
+        cout<<"no iguales"<<endl;
+    
 
     return 0;
 }

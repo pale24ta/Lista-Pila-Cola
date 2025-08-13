@@ -2,9 +2,8 @@
 CXX = g++
 
 # Define las opciones de compilación (flags)
-# -Wall: Habilita todas las advertencias 
+# -Wall: Habilita todas las advertencias (¡muy recomendado!)
 # -g: Incluye información de depuración para gdb
-# -O3 optimizador
 CXXFLAGS = -Wall -g -O3
 
 # Define el directorio de los encabezados personalizados (tus .hpp)
