@@ -17,7 +17,7 @@ int main(){
 	nueva.insertar(2,1);
 	otra.insertar(3,1);
 
-	Lista<int> algo = nueva.concat(otra);
-	cout<<algo;
+	nueva+otra;
+	cout<<nueva;
 	return 0;
 }

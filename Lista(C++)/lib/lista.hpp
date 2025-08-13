@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include "nodo.hpp"
-#include "cola.hpp"
 
 using namespace std;
 
@@ -48,6 +47,7 @@ class Lista{
 		void intercambiar(int pos1, int pos2);
 		bool operator==(const Lista<Element> &target); // Compara dos listas
 		Lista<Element> concat(const Lista<Element> &target); // concatena
+		Lista<Element>& operator+(const Lista<Element> &target);
 
 		void leftShift(int shift);
 		void invertirLista();
@@ -200,6 +200,24 @@ Lista<Element> Lista<Element>::concat(const Lista<Element> &target) // concatena
 
 	nueva.len += target.len;
 	return nueva;
+}
+
+template <class Element>
+inline Lista<Element> &Lista<Element>::operator+(const Lista<Element> &target)
+{
+	if(target.len > 0){
+
+		Nodo<Element> *p = target.head;
+
+		while(p != NULL){
+			tail->setNext(new Nodo<Element>(p->getInfo()));
+			tail = tail->getNext();
+			p = p->getNext();
+		}
+	}
+
+	len += target.len;
+	return *this;
 }
 
 template <class Element>
