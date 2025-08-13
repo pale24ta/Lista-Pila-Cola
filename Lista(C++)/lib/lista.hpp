@@ -46,13 +46,14 @@ class Lista{
 		void invertir();
 		Element& operator[](int index);
 		void intercambiar(int pos1, int pos2);
-		bool operator==(const Lista<Element> &target);
-		Lista<Element> operator+(Lista<Element> &target);
-		Lista<Element>& operator=(Lista<Element> &target);
+		bool operator==(const Lista<Element> &target); // Compara dos listas
+		Lista<Element> concat(const Lista<Element> &target); // concatena
+
 		void leftShift(int shift);
 		void invertirLista();
 
 };
+
 template<class Element>
 Lista<Element>::~Lista(){
 	this->vaciar();
@@ -170,7 +171,7 @@ void Lista<Element>::intercambiar(int pos1, int pos2){
 template <class Element>
 inline bool Lista<Element>::operator==(const Lista<Element> &target)
 {
-    if(len == len.target){
+    if(len == target.len){
 		Nodo<Element> *p = head, *q = target.head;
 
 		while(p != NULL && q != NULL){
@@ -181,21 +182,24 @@ inline bool Lista<Element>::operator==(const Lista<Element> &target)
 	}
 	return false;
 }
-
-template <class Element>
-inline Lista<Element> Lista<Element>::operator+(Lista<Element> &target)
+template<class Element>
+Lista<Element> Lista<Element>::concat(const Lista<Element> &target) // concatena
 {
-    Lista<Element> nueva(*this);
-	Nodo<Element> *q = target.head;
+	Lista<Element> nueva(*this);
 
-	while(q != NULL){
-		nueva.tail->setNext(new Nodo<Element>(q->getInfo()));
-		nueva.tail = nueva.tail->getNext();
-		q = q->getNext();
+	if(target.len > 0){
+
+		Nodo<Element> *p = target.head;
+
+		while(p != NULL){
+			nueva.tail->setNext(new Nodo<Element>(p->getInfo()));
+			nueva.tail = nueva.tail->getNext();
+			p = p->getNext();
+		}
 	}
 
+	nueva.len += target.len;
 	return nueva;
-	
 }
 
 template <class Element>
@@ -218,7 +222,7 @@ inline Lista<Element>::Lista(Element *array, int size)
 template <class Element>
 inline Lista<Element>::Lista(const Lista<Element> &target): head(NULL),tail(NULL),len(0)
 {
-	if(target.len != 0){
+	if(target.len > 0){
 
 		Nodo<Element> *ptr = target.head;
 		Nodo<Element> *nuevo = new Nodo<Element>(ptr->getInfo());
@@ -319,36 +323,29 @@ template<class Element>
 Element& Lista<Element>::consultar(int pos){
 
 
-	// if (pos < 1)
-	// {
-	// 	pos = len + 2 + pos;
-	// }
-	// else if (pos >= len)
-	// {
-	// 	pos = pos % len;
-	// }
-
-	if(pos > 0 && pos  <= len){
-
-		if(pos == 1){
-			return head->getInfo();
-		}else if(pos == len){
-			return tail->getInfo();
-		}else{
-
-			Nodo<Element> *act = head->getNext();
-
-			for(int i = 2; i < pos && act->getNext() != NULL; i++)
-			{
-				act = act->getNext();
-			}
-
-			return act->getInfo();
-		}
-	
+	if(pos > len){
+		pos = len;
 	}
-	// En caso de no cumplir con la condicion y no devolver nada, se lanza una excepcion
-	throw std::out_of_range("Fuera de rango");
+	if(pos <= 0){
+		pos = 1;
+	}
+
+	if(pos == 1){
+		return head->getInfo();
+	}else if(pos == len){
+		return tail->getInfo();
+	}else{
+
+		Nodo<Element> *act = head->getNext();
+
+		for(int i = 2; i < pos && act->getNext() != NULL; i++)
+		{
+			act = act->getNext();
+		}
+
+		return act->getInfo();
+	}
+	
 
 }
 template <class Element>
@@ -356,7 +353,7 @@ inline void Lista<Element>::vaciar()
 {
 	if(head != NULL){
 
-		Nodo<T> del = NULL;
+		Nodo<Element> *del = NULL;
 		while(head != NULL){
 			del = head;
 			head = head->getNext();
