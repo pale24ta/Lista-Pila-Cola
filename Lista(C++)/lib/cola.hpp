@@ -1,6 +1,8 @@
 #ifndef COLA_HPP
 #define COLA_HPP
 
+// hola mundo
+
 #include "nodo.hpp"
 #include "iostream"
 

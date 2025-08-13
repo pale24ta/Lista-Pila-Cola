@@ -45,7 +45,7 @@ class Lista{
 		void invertir();
 		Element& operator[](int index);
 		void intercambiar(int pos1, int pos2);
-
+		bool operator==(const Lista<Element> &target);
 		void leftShift(int shift);
 		void invertirLista();
 
@@ -139,6 +139,12 @@ void Lista<Element>::intercambiar(int pos1, int pos2){
             }
         }
     }
+}
+
+template <class Element>
+inline bool Lista<Element>::operator==(const Lista<Element> &target)
+{
+    return false;
 }
 
 template <class Element>
