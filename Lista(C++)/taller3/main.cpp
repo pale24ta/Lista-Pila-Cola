@@ -13,11 +13,14 @@ int main(){
 
 
 	Lista<int> otra;
-	Lista<int> nueva;
-	nueva.insertar(2,1);
-	otra.insertar(3,1);
+	Lista<int> a1,a2;
+	
+	for(int i=2; i < 11; i++){
+		otra.insertar(i*2,1);
+	}
 
-	nueva+otra;
-	cout<<nueva;
+	otra.split(a1,a2);
+
+	cout<<a1;
 	return 0;
 }

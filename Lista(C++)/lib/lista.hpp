@@ -48,6 +48,7 @@ class Lista{
 		bool operator==(const Lista<Element> &target); // Compara dos listas
 		Lista<Element> concat(const Lista<Element> &target); // concatena
 		Lista<Element>& operator+(const Lista<Element> &target);
+		void split(Lista<Element> &t1, Lista<Element> &t2);
 
 		void leftShift(int shift);
 		void invertirLista();
@@ -218,6 +219,33 @@ inline Lista<Element> &Lista<Element>::operator+(const Lista<Element> &target)
 
 	len += target.len;
 	return *this;
+}
+
+template <class Element>
+inline void Lista<Element>::split(Lista<Element> &t1, Lista<Element> &t2)
+{
+	if(len > 0){
+		if(t1.len != 0 || t2.len != 0){
+			t1.vaciar();
+			t2.vaciar();
+		}
+
+
+		int pivote = len / 2;
+
+		int i;
+
+		Nodo<Element> *p = head;
+
+		for(i = 1 ; p != NULL; i++){
+			if(i <= pivote){
+				t1.insertar(p->getInfo(),t1.len+1);
+			}else{
+				t2.insertar(p->getInfo(),t2.len+1);
+			}
+			p = p->getNext();
+		}
+	}
 }
 
 template <class Element>
