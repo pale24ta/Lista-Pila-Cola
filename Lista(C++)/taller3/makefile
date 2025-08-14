@@ -3,7 +3,7 @@
 # Variable para el compilador
 CC = g++
 
-QFLAGS = -std=c++98 -Wall -Wextra 
+QFLAGS =  -Wall -Wextra 
 MAIN = main.cpp
 
 # en esta variable ira el directorio de los archivos *.hpp
